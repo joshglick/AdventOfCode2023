@@ -16,3 +16,13 @@ def parse_input_as_lines_of_chars(filename):
             parsed.append([char for char in line.strip()])
 
     return parsed
+
+def parse_input_as_list_of_strings(filename):
+    parsed = []
+    with open(filename, 'r') as input_file:
+        lines = input_file.readlines()
+
+        for line in lines:
+            parsed.append(line.strip())
+
+    return parsed

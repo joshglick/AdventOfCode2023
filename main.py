@@ -1,5 +1,5 @@
 # This is a sample Python script.
-import days.one as day1
+import days.two as puzzle
 from common.utils import timed
 
 
@@ -9,7 +9,7 @@ from common.utils import timed
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    timed(day1.part_one, [])
-    timed(day1.part_two, [])
+    timed(puzzle.part_one, [])
+    timed(puzzle.part_two, [])
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
