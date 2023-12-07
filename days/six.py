@@ -52,10 +52,6 @@ def find_min_and_max_hold_times(total_time, record_distance):
 
     return min_point, max_point
 
-
-
-
-
 def part_one():
     data = parse_input_as_list_of_strings(DAY_SIX_INPUT)
 
@@ -63,9 +59,6 @@ def part_one():
     distances = [int(n) for n in data[1].split(':')[1].strip().split(' ') if n.isdigit()]
 
     total = 1
-
-    x, y = find_min_and_max_hold_times(15, 40)
-
 
     for i in range(0, len(times)):
         min, max = find_min_and_max_hold_times(times[i], distances[i])
