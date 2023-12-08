@@ -94,10 +94,7 @@ def part_two():
             Node.all_nodes[name].set_left(left)
             Node.all_nodes[name].set_right(right)
 
-    count = 0
     nodes = [n for n in Node.all_nodes.values() if n.name[-1] == 'A']
-    next_instruction = 0
-    end = False
     counts = []
 
     for i in range(0, len(nodes)):
