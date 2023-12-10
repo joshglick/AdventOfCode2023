@@ -26,3 +26,13 @@ def parse_input_as_list_of_strings(filename):
             parsed.append(line.strip())
 
     return parsed
+
+def parse_input_as_list_of_ints(filename):
+    parsed = []
+    with open(filename, 'r') as input_file:
+        lines = input_file.readlines()
+
+        for line in lines:
+            parsed.append([int(n) for n in line.strip().split(' ')])
+
+    return parsed
