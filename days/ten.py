@@ -33,6 +33,9 @@ class Pipe:
 
         return True
 
+    def name(self):
+        return "|"
+
 class VerticalPipe(Pipe):
 
     def next_pos(self):
@@ -69,6 +72,9 @@ class HorizontalPipe(Pipe):
             return type(self).map[self.next_pos()[0]][self.next_pos()[1]] not in self.invalid_next()
         return base
 
+    def name(self):
+        return "-"
+
 class LPipe(Pipe):
 
     def next_pos(self):
@@ -86,6 +92,9 @@ class LPipe(Pipe):
         if base: # this makes sure we've already checked out of bounds
             return type(self).map[self.next_pos()[0]][self.next_pos()[1]] not in self.invalid_next()
         return base
+
+    def name(self):
+        return "L"
 
 class JPipe(Pipe):
 
@@ -105,6 +114,9 @@ class JPipe(Pipe):
             return type(self).map[self.next_pos()[0]][self.next_pos()[1]] not in self.invalid_next()
         return base
 
+    def name(self):
+        return "J"
+
 class SevenPipe(Pipe):
 
     def next_pos(self):
@@ -123,6 +135,9 @@ class SevenPipe(Pipe):
             return type(self).map[self.next_pos()[0]][self.next_pos()[1]] not in self.invalid_next()
         return base
 
+    def name(self):
+        return "7"
+
 class FPipe(Pipe):
 
     def next_pos(self):
@@ -140,6 +155,9 @@ class FPipe(Pipe):
         if base: # this makes sure we've already checked out of bounds
             return type(self).map[self.next_pos()[0]][self.next_pos()[1]] not in self.invalid_next()
         return base
+
+    def name(self):
+        return "F"
 
 
 
@@ -260,54 +278,26 @@ def part_two():
             enclose_map[i].append('.')
 
     for pipe in valid_loop:
-        enclose_map[pipe.pos[0]][pipe.pos[1]] = 'X'
+        enclose_map[pipe.pos[0]][pipe.pos[1]] = pipe.name()
 
-    # go through and modify all of the edge nodes that are not x to be 0
+    # I struggled a lot with this section, first I tried doing a fill algorithm where I set the outside tiles to 0 and then changed over tiles to 0 until all were correct but that didn't work because not every piece surrounded by pipes is considered in the loop
+    # Then I tried the scanning algorithm on my own but I didn't know how to handle the corners correctly, eventually used the algorithm from
+    # https://github.com/fred-corp/Advent-of-Code/blob/main/2023/day10/day10.js on github. Thanks fred-corp.
 
-    for i in range(0, len(enclose_map[0])):
-        if enclose_map[0][i] != 'X':
-            enclose_map[0][i] = 0
-
-    for i in range(0, len(enclose_map[-1])):
-        if enclose_map[-1][i] != 'X':
-            enclose_map[-1][i] = 0
-
+    enclosedTiles = set()
     for i in range(0, len(enclose_map)):
-        if enclose_map[i][0] != 'X':
-            enclose_map[i][0] = 0
-
-    for i in range(0, len(enclose_map)):
-        if enclose_map[i][-1] != 'X':
-            enclose_map[i][-1] = 0
-
-    modified = True
-    while modified:
-        modified = False
-        for i in range(1, len(enclose_map)-1): # starting here because we did edges above and I don't need to boundary check
-            for j in range(1, len(enclose_map[0])-1):
-                if enclose_map[i][j] == '.':
-                    # if any neighbor is 0 set to 0 and modified true
-                    north = enclose_map[i-1][j] == 0
-                    south = enclose_map[i+1][j] == 0
-                    east = enclose_map[i][j+1] == 0
-                    west = enclose_map[i][j-1] == 0
-                    if any([north, south, east, west]):
-                        enclose_map[i][j] = 0
-                        modified = True
-
-    enclosed_count = 0
-
-    for i in range(0, len(enclose_map)):
+        in_loop = False
+        pipe_count = 0
+        last_pipe = ''
         for j in range(0, len(enclose_map[0])):
-            if enclose_map[i][j] == '.':
-                enclosed_count += 1
-    #
-    # for i in range(0, len(enclose_map)):
-    #     for j in range(0, len(enclose_map[0])):
-    #         if enclose_map[i][j] == '.':
-    #             enclosed_count += 1
+            pipe = enclose_map[i][j]
+            if pipe != '.' and pipe != '-':
+                pipe_count += 1
+                if pipe == 'J' and last_pipe == 'F' or pipe == '7' and last_pipe == 'L':
+                    pipe_count -= 1
+                last_pipe = pipe
+                in_loop = pipe_count % 2 == 1
+            if pipe == '.' and in_loop:
+                enclosedTiles.add((i, j))
 
-    for l in enclose_map:
-        print([str(c) for c in l])
-
-    return enclosed_count
+    return len(enclosedTiles)

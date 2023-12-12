@@ -29,8 +29,6 @@ def find_prev_value(num_list):
             next_list.append(num_list[i]-num_list[i-1])
         return num_list[-0] - find_prev_value(next_list)
 
-
-
 def part_one():
     data = parse_input_as_list_of_ints(DAY_NINE_INPUT)
     sum = 0
