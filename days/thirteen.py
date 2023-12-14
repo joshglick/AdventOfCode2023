@@ -44,8 +44,6 @@ def diffs(s1, s2):
 
     return diffs
 
-
-
 def horizontal_reflection_with_error(galaxy, index=1):
     if index == len(galaxy):
         return -1

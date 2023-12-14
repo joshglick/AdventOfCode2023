@@ -1,5 +1,5 @@
 # This is a sample Python script.
-import days.thirteen as puzzle
+import days.fourteen as puzzle
 from common.utils import timed
 
 
